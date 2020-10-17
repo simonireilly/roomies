@@ -77,8 +77,16 @@ export default function Home() {
     )
   }, [left, top])
 
+  const controllerAction = (keyName) => {
+    d[keyName] = true
+
+    setInterval(() => {
+      d[keyName] = false
+    }, 30);
+  }
+
   return (
-    <>
+    <div className='wrapper'>
       <div id="pane">
         <div
           id="box"
@@ -100,7 +108,18 @@ export default function Home() {
             </div>
           ))}
       </div>
-      { JSON.stringify(positions, undefined, 2)}
-    </>
+      <div className="controls">
+        <button className='control'
+          onTouchStart={() => controllerAction('ArrowDown')}
+        >
+          Down
+        </button>
+      </div>
+      <div>
+        <pre>
+          {JSON.stringify(positions, undefined, 2)}
+        </pre>
+      </div>
+    </div>
   )
 }

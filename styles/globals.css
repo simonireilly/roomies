@@ -22,6 +22,14 @@ a {
   border: 2px solid red;
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
 .box {
   position: absolute;
   width: 20px;
