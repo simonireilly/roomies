@@ -79,10 +79,6 @@ export default function Home() {
 
   const controllerAction = (keyName) => {
     d[keyName] = true
-
-    setInterval(() => {
-      d[keyName] = false
-    }, 30);
   }
 
   return (
@@ -113,6 +109,21 @@ export default function Home() {
           onTouchStart={() => controllerAction('ArrowDown')}
         >
           Down
+        </button>
+        <button className='control'
+          onTouchStart={() => controllerAction('ArrowUp')}
+        >
+          Up
+        </button>
+        <button className='control'
+          onTouchStart={() => controllerAction('ArrowLeft')}
+        >
+          Left
+        </button>
+        <button className='control'
+          onTouchStart={() => controllerAction('ArrowRight')}
+        >
+          Right
         </button>
       </div>
       <div>
