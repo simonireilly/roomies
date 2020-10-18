@@ -1,10 +1,28 @@
 import { RoomService } from '@roomservice/browser'
 import { InnerPresenceClient } from '@roomservice/browser/dist/PresenceClient'
 import { useEffect, useState } from 'react'
+import { Controls } from '../components/games/controls'
+
+export type Directions = {
+  ArrowUp: boolean
+  ArrowDown: boolean
+  ArrowRight: boolean
+  ArrowLeft: boolean
+}
+
+type Player = {
+  x: string
+  y: string
+  name: string
+}
+
+type Positions = {
+  [key: string]: Player
+}
 
 export default function Home() {
   const [presence, setPresence] = useState<InnerPresenceClient>()
-  const [positions, setPositions] = useState({})
+  const [positions, setPositions] = useState<Positions>({})
 
   // On boot connect to the room and load all presences
   useEffect(() => {
@@ -19,12 +37,11 @@ export default function Home() {
       setPresence(p)
 
       // Set the initial positions
-      const v = await p.getAll('position')
+      const v = await p.getAll<Player>('players')
       setPositions(v)
 
       // Subscribe any updates to the room positions
-      return room.subscribe(p, 'position', (msg) => {
-        console.log('Position message:', msg)
+      return room.subscribe<Player>(p, 'players', (msg) => {
         setPositions(msg)
       })
     }
@@ -32,29 +49,35 @@ export default function Home() {
     load().catch(console.error)
   }, [])
 
-  const d = {};
+  const directions: Directions = {
+    ArrowUp: false,
+    ArrowDown: false,
+    ArrowRight: false,
+    ArrowLeft: false
+  }
+
   const boxWidth = 3;
 
   const [left, setLeft] = useState(0)
   const [top, setTop] = useState(0)
+  const [name, setName] = useState('anon')
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       document.body.addEventListener('keydown', function (e) {
-        d[e.key] = true;
+        directions[e.key] = true;
       });
 
       document.body.addEventListener('keyup', function (e) {
-        d[e.key] = false;
+        directions[e.key] = false;
       });
 
       const box = document.getElementById('box');
       const pane = document.getElementById('pane');
       const maxWidth = pane.offsetWidth - box.offsetWidth
 
-
       const newValue = (value, lowerArrowKeyName, upperArrowKeyName) => {
-        var n = parseInt(value, 10) - (d[lowerArrowKeyName] ? boxWidth : 0) + (d[upperArrowKeyName] ? boxWidth : 0);
+        var n = parseInt(value, 10) - (directions[lowerArrowKeyName] ? boxWidth : 0) + (directions[upperArrowKeyName] ? boxWidth : 0);
         return n < 0 ? 0 : n > maxWidth ? maxWidth : n;
       }
 
@@ -67,26 +90,32 @@ export default function Home() {
 
   useEffect(() => {
     if (!presence) return
-    console.log(presence)
+
     presence.set(
-      'position',
+      'players',
       {
         x: left,
-        y: top
-      }
+        y: top,
+        name: name
+      },
+      3000
     )
-  }, [left, top])
-
-  const controllerAction = (keyName) => {
-    d[keyName] = true
-  }
+  }, [left, top, name])
 
   return (
     <div className='wrapper'>
+      <p>
+        Use the arrow keys to move
+      </p>
+      <label>
+        UserName: &nbsp;
+        <input onChange={(e) => setName(e.target.value)} />
+      </label>
+      <br />
       <div id="pane">
         <div
           id="box"
-          className="box"
+          className="player"
           style={{ left, top }}
           title="you"
         ></div>
@@ -95,41 +124,20 @@ export default function Home() {
           .map(userName => (
             <div
               key={userName}
-              title={userName}
-              className="box"
+              title={positions[userName].name}
+              className="opponent"
               style={{
                 left: positions[userName].x,
                 top: positions[userName].y
               }}>
+              <span className="pill">
+                {positions[userName].name}
+              </span>
             </div>
           ))}
       </div>
       <div className="controls">
-        <button className='control'
-          onTouchStart={() => controllerAction('ArrowDown')}
-        >
-          Down
-        </button>
-        <button className='control'
-          onTouchStart={() => controllerAction('ArrowUp')}
-        >
-          Up
-        </button>
-        <button className='control'
-          onTouchStart={() => controllerAction('ArrowLeft')}
-        >
-          Left
-        </button>
-        <button className='control'
-          onTouchStart={() => controllerAction('ArrowRight')}
-        >
-          Right
-        </button>
-      </div>
-      <div>
-        <pre>
-          {JSON.stringify(positions, undefined, 2)}
-        </pre>
+        {false && <Controls directions={directions} />}
       </div>
     </div>
   )
