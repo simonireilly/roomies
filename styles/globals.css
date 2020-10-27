@@ -35,6 +35,7 @@ a {
   width: 20px;
   height: 20px;
   background-color: hotpink;
+  border-radius: 20%;
 }
 
 .opponent {
