@@ -147,7 +147,7 @@ export default function Home() {
             type="number" 
             min="1" 
             max="50" 
-            onBlur={(e) => setGameSpeed(e.target.value)} />
+            onBlur={(e) => setGameSpeed(e.target.valueAsNumber)} />
         </label>
       </div>
     </div>
