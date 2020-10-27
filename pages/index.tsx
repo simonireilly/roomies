@@ -58,9 +58,10 @@ export default function Home() {
 
   const boxWidth = 3;
 
-  const [left, setLeft] = useState(0)
-  const [top, setTop] = useState(0)
-  const [name, setName] = useState('anon')
+  const [left, setLeft] = useState<number>(0)
+  const [top, setTop] = useState<number>(0)
+  const [name, setName] = useState<string>('anon')
+  const [gameSpeed, setGameSpeed] = useState<number>(20)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -76,17 +77,18 @@ export default function Home() {
       const pane = document.getElementById('pane');
       const maxWidth = pane.offsetWidth - box.offsetWidth
 
-      const newValue = (value, lowerArrowKeyName, upperArrowKeyName) => {
-        var n = parseInt(value, 10) - (directions[lowerArrowKeyName] ? boxWidth : 0) + (directions[upperArrowKeyName] ? boxWidth : 0);
+      const newValue = (value: number, lowerArrowKeyName: string, upperArrowKeyName: string): number => {
+        var n = value - (directions[lowerArrowKeyName] ? boxWidth : 0) + (directions[upperArrowKeyName] ? boxWidth : 0);
         return n < 0 ? 0 : n > maxWidth ? maxWidth : n;
       }
 
-      setInterval(() => {
+      const interval = setInterval(() => {
         setLeft((left) => newValue(left, 'ArrowLeft', 'ArrowRight'))
         setTop((top) => newValue(top, 'ArrowUp', 'ArrowDown'))
-      }, 20);
+      }, gameSpeed);
+      return () => clearInterval(interval);
     }
-  }, [])
+  }, [gameSpeed])
 
   useEffect(() => {
     if (!presence) return
@@ -137,7 +139,16 @@ export default function Home() {
           ))}
       </div>
       <div className="controls">
-        {false && <Controls directions={directions} />}
+            <h3>{gameSpeed}</h3>
+        <label>
+          Set game speed: &nbsp;
+          <input 
+            className="gameSpeedInput" 
+            type="number" 
+            min="1" 
+            max="50" 
+            onBlur={(e) => setGameSpeed(e.target.valueAsNumber)} />
+        </label>
       </div>
     </div>
   )
