@@ -20,6 +20,13 @@ type Positions = {
   [key: string]: Player
 }
 
+const directions: Directions = {
+  ArrowUp: false,
+  ArrowDown: false,
+  ArrowRight: false,
+  ArrowLeft: false
+}
+
 export default function Home() {
   const [presence, setPresence] = useState<InnerPresenceClient>()
   const [positions, setPositions] = useState<Positions>({})
@@ -48,13 +55,6 @@ export default function Home() {
 
     load().catch(console.error)
   }, [])
-
-  const directions: Directions = {
-    ArrowUp: false,
-    ArrowDown: false,
-    ArrowRight: false,
-    ArrowLeft: false
-  }
 
   const boxWidth = 3;
 
@@ -106,49 +106,51 @@ export default function Home() {
 
   return (
     <div className='wrapper'>
-      <p>
-        Use the arrow keys to move
-      </p>
-      <label>
-        UserName: &nbsp;
-        <input onChange={(e) => setName(e.target.value)} />
-      </label>
-      <br />
-      <div id="pane">
-        <div
-          id="box"
-          className="player"
-          style={{ left, top }}
-          title="you"
-        ></div>
-        {presence && Object.keys(positions)
-          .filter(userName => userName !== presence.me)
-          .map(userName => (
-            <div
-              key={userName}
-              title={positions[userName].name}
-              className="opponent"
-              style={{
-                left: positions[userName].x,
-                top: positions[userName].y
-              }}>
-              <span className="pill">
-                {positions[userName].name}
-              </span>
-            </div>
-          ))}
-      </div>
       <div className="controls">
-            <h3>{gameSpeed}</h3>
         <label>
           Set game speed: &nbsp;
-          <input 
-            className="gameSpeedInput" 
-            type="number" 
-            min="1" 
-            max="50" 
+          <input
+            className="gameSpeedInput"
+            type="number"
+            min="1"
+            max="50"
             onBlur={(e) => setGameSpeed(e.target.valueAsNumber)} />
         </label>
+      </div>
+      <div className="board">
+        <label>
+          UserName: &nbsp;
+          <input onChange={(e) => setName(e.target.value)} />
+        </label>
+        <hr />
+        <br />
+        <div id="pane">
+          <div
+            id="box"
+            className="player"
+            style={{ left, top }}
+            title="you"
+          ></div>
+          {presence && Object.keys(positions)
+            .filter(userName => userName !== presence.me)
+            .map(userName => (
+              <div
+                key={userName}
+                title={positions[userName].name}
+                className="opponent"
+                style={{
+                  left: positions[userName].x,
+                  top: positions[userName].y
+                }}>
+                <span className="pill">
+                  {positions[userName].name}
+                </span>
+              </div>
+            ))}
+        </div>
+      </div>
+      <div className="controls">
+        <Controls directions={directions} />
       </div>
     </div>
   )

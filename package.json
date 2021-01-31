@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@react-aria/interactions": "^3.3.2",
     "@roomservice/browser": "2.0.1",
     "next": "10.0.0",
     "react": "16.13.1",
