@@ -80,14 +80,15 @@ export default function Home() {
   }, [left, top, name])
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (!coin?.position) return
+    if (!coin?.position) return
 
+    const interval = setInterval(() => {
       const coinElement = document.getElementById("coin")
       const boxElement = document.getElementById("box")
 
       const overlap = isOverlapping(coinElement, boxElement)
       if (overlap) {
+        console.log('overlap')
         map?.set("position", {
           x: Math.floor(Math.random() * 300),
           y: Math.floor(Math.random() * 300)
@@ -95,7 +96,7 @@ export default function Home() {
       }
     }, gameSpeed);
     return () => clearInterval(interval);
-  }, [])
+  }, [map])
 
   return (
     <div className='wrapper'>
