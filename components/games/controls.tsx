@@ -1,6 +1,6 @@
 import { Directions } from "../../pages"
 
-export const Controls = ({ directions }: { directions: Directions }) => {
+export default function Controls({ directions }: { directions: Directions }) {
   const setDirection = (actionName, value: boolean, e: MouseEvent) => {
     e.preventDefault()
     directions[actionName] = value

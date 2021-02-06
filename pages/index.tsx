@@ -1,9 +1,10 @@
 import { useMap, usePresence } from '@roomservice/react'
 import { useEffect, useState } from 'react'
-import Coin from '../components/games/coin'
-import { Controls } from '../components/games/controls'
-import Opponent from '../components/games/opponent'
 import { isOverlapping } from '../utils/is-overlapping'
+import Controls from '../components/games/controls'
+import Coin from '../components/games/coin'
+import Opponent from '../components/games/opponent'
+import Scoreboard from '../components/games/scoreboard'
 
 export type Directions = {
   ArrowUp: boolean
@@ -12,10 +13,11 @@ export type Directions = {
   ArrowLeft: boolean
 }
 
-type Player = {
+export type Player = {
   x: string
   y: string
   name: string
+  score?: number
 }
 
 const directions: Directions = {
@@ -25,15 +27,17 @@ const directions: Directions = {
   ArrowLeft: false
 }
 
+const boxWidth = 3;
+
 export default function Home() {
   const [players, setMyPlayer] = usePresence<Player>("demo", "players");
   const [coin, map] = useMap("demo", "coin");
-  const boxWidth = 3;
 
   const [left, setLeft] = useState<number>(0)
   const [top, setTop] = useState<number>(0)
   const [name, setName] = useState<string>('anon')
-  const [gameSpeed, setGameSpeed] = useState<number>(50)
+  const [score, setScore] = useState<number>(0)
+  const [gameSpeed, setGameSpeed] = useState<number>(20)
 
   useEffect(() => {
     map?.set("position", {
@@ -75,7 +79,8 @@ export default function Home() {
     setMyPlayer.set({
       x: left.toString(),
       y: top.toString(),
-      name: name
+      name: name,
+      score: score
     })
   }, [left, top, name])
 
@@ -88,11 +93,11 @@ export default function Home() {
 
       const overlap = isOverlapping(coinElement, boxElement)
       if (overlap) {
-        console.log('overlap')
         map?.set("position", {
           x: Math.floor(Math.random() * 300),
           y: Math.floor(Math.random() * 300)
         })
+        setScore((val) => val + 10)
       }
     }, gameSpeed);
     return () => clearInterval(interval);
@@ -119,6 +124,7 @@ export default function Home() {
         }
         {coin?.position && <Coin {...coin.position} />}
       </div>
+      <Scoreboard />
       <div className="controls">
         <h3>{gameSpeed}</h3>
         <label>
