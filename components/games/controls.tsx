@@ -16,19 +16,22 @@ export const Controls = ({ directions }: { directions: Directions }) => {
 
   return (
     <>
-      <p>Alpha</p>
-      <button className='control' {...ButtonAction('ArrowDown')} >
-        Down
-    </button>
-      <button className='control' {...ButtonAction('ArrowUp')} >
-        Up
-    </button>
-      <button className='control' {...ButtonAction('ArrowLeft')} >
-        Left
-    </button>
-      <button className='control' {...ButtonAction('ArrowRight')} >
-        Right
-    </button>
+      <div className="up-down-control">
+        <button className='control' {...ButtonAction('ArrowUp')} >
+          &uarr;
+        </button>
+        <button className='control' {...ButtonAction('ArrowDown')} >
+          &darr;
+        </button>
+      </div>
+      <div className="left-right-control">
+        <button className='control' {...ButtonAction('ArrowLeft')} >
+          &larr;
+        </button>
+        <button className='control' {...ButtonAction('ArrowRight')} >
+          &rarr;
+        </button>
+      </div>
     </>
   )
 }
