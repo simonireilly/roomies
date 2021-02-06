@@ -8,9 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
-    "@roomservice/browser": "2.0.1",
+    "@roomservice/browser": "3.0.4",
     "@roomservice/node": "^1.0.0",
+    "@roomservice/react": "^1.0.6",
     "next": "10.0.0",
+    "pino": "^6.11.0",
     "react": "16.13.1",
     "react-dom": "16.13.1"
   },
