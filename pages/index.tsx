@@ -113,9 +113,7 @@ export default function Home() {
           Object.entries(players)
             .filter(([_, val]) => val.name !== name)
             .map(([key, val]) => {
-              console.info({ key, val })
-              const props = { key, ...val }
-              return <Opponent {...props} />
+              return <Opponent key={key} {...val} />
             })
         }
         {coin?.position && <Coin {...coin.position} />}

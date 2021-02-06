@@ -1,7 +1,6 @@
-export default function Opponent({ x, y, name, key }: { x: string, y: string, name: string, key: string }) {
-  console.info({ x, y, name, key })
+export default function Opponent({ x, y, name, }: { x: string, y: string, name: string }) {
+  console.info({ x, y, name, })
   return <div
-    key={key}
     title={name}
     className="opponent"
     style={{
