@@ -15,7 +15,6 @@ export default function Scoreboard() {
       <tbody>
         {
           players && Object.entries(players)
-            .filter(([_, val]) => val.name !== name)
             .map(([key, val]) => {
               return <tr key={key}>
                 <td>{val.name}</td>
