@@ -1,7 +1,10 @@
-import { RoomService } from '@roomservice/browser'
-import { InnerPresenceClient } from '@roomservice/browser/dist/PresenceClient'
+import { useMap, usePresence } from '@roomservice/react'
 import { useEffect, useState } from 'react'
-import { Controls } from '../components/games/controls'
+import { isOverlapping } from '../utils/is-overlapping'
+import Controls from '../components/games/controls'
+import Coin from '../components/games/coin'
+import Opponent from '../components/games/opponent'
+import Scoreboard from '../components/games/scoreboard'
 
 export type Directions = {
   ArrowUp: boolean
@@ -10,14 +13,11 @@ export type Directions = {
   ArrowLeft: boolean
 }
 
-type Player = {
+export type Player = {
   x: string
   y: string
   name: string
-}
-
-type Positions = {
-  [key: string]: Player
+  score?: number
 }
 
 const directions: Directions = {
@@ -27,41 +27,24 @@ const directions: Directions = {
   ArrowLeft: false
 }
 
+const boxWidth = 3;
+
 export default function Home() {
-  const [presence, setPresence] = useState<InnerPresenceClient>()
-  const [positions, setPositions] = useState<Positions>({})
-
-  // On boot connect to the room and load all presences
-  useEffect(() => {
-    async function load() {
-      const rs = new RoomService({
-        auth: '/api/roomservice'
-      })
-
-      // Set presence in the client side state to be the current presence
-      const room = await rs.room('demo')
-      const p = room.presence()
-      setPresence(p)
-
-      // Set the initial positions
-      const v = await p.getAll<Player>('players')
-      setPositions(v)
-
-      // Subscribe any updates to the room positions
-      return room.subscribe<Player>(p, 'players', (msg) => {
-        setPositions(msg)
-      })
-    }
-
-    load().catch(console.error)
-  }, [])
-
-  const boxWidth = 3;
+  const [players, setMyPlayer] = usePresence<Player>("demo", "players");
+  const [coin, map] = useMap("demo", "coin");
 
   const [left, setLeft] = useState<number>(0)
   const [top, setTop] = useState<number>(0)
   const [name, setName] = useState<string>('anon')
+  const [score, setScore] = useState<number>(0)
   const [gameSpeed, setGameSpeed] = useState<number>(20)
+
+  useEffect(() => {
+    map?.set("position", {
+      x: 100,
+      y: 100
+    })
+  }, [])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -91,22 +74,59 @@ export default function Home() {
   }, [gameSpeed])
 
   useEffect(() => {
-    if (!presence) return
+    if (!players) return
 
-    presence.set(
-      'players',
-      {
-        x: left,
-        y: top,
-        name: name
-      },
-      3000
-    )
+    setMyPlayer.set({
+      x: left.toString(),
+      y: top.toString(),
+      name: name,
+      score: score
+    })
   }, [left, top, name])
+
+  useEffect(() => {
+    if (!coin?.position) return
+
+    const interval = setInterval(() => {
+      const coinElement = document.getElementById("coin")
+      const boxElement = document.getElementById("box")
+
+      const overlap = isOverlapping(coinElement, boxElement)
+      if (overlap) {
+        map?.set("position", {
+          x: Math.floor(Math.random() * 300),
+          y: Math.floor(Math.random() * 300)
+        })
+        setScore((val) => val + 10)
+      }
+    }, gameSpeed);
+    return () => clearInterval(interval);
+  }, [map])
 
   return (
     <div className='wrapper'>
+      <p>
+        Use the arrow keys to move
+      </p>
+      <label>
+        UserName: &nbsp;
+        <input onChange={(e) => setName(e.target.value)} />
+      </label>
+      <br />
+      <div id="pane">
+        <div id="box" className="player" style={{ left, top }} title="you" ></div>
+        {
+          Object.entries(players)
+            .filter(([_, val]) => val.name !== name)
+            .map(([key, val]) => {
+              return <Opponent key={key} {...val} />
+            })
+        }
+        {coin?.position && <Coin {...coin.position} />}
+      </div>
+      <Scoreboard />
       <div className="controls">
+        <h3>{gameSpeed}</h3>
         <label>
           Set game speed: &nbsp;
           <input
@@ -116,38 +136,6 @@ export default function Home() {
             max="50"
             onBlur={(e) => setGameSpeed(e.target.valueAsNumber)} />
         </label>
-      </div>
-      <div className="board">
-        <label>
-          UserName: &nbsp;
-          <input onChange={(e) => setName(e.target.value)} />
-        </label>
-        <hr />
-        <br />
-        <div id="pane">
-          <div
-            id="box"
-            className="player"
-            style={{ left, top }}
-            title="you"
-          ></div>
-          {presence && Object.keys(positions)
-            .filter(userName => userName !== presence.me)
-            .map(userName => (
-              <div
-                key={userName}
-                title={positions[userName].name}
-                className="opponent"
-                style={{
-                  left: positions[userName].x,
-                  top: positions[userName].y
-                }}>
-                <span className="pill">
-                  {positions[userName].name}
-                </span>
-              </div>
-            ))}
-        </div>
       </div>
       <div className="controls">
         <Controls directions={directions} />

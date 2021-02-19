@@ -87,3 +87,12 @@ a {
   display: flex;
   flex-direction: column;
 }
+
+.coin {
+  position: absolute;
+  background-color: gold;
+  border: 3px darkgoldenrod solid;
+  border-radius: 50%;
+  height: 1em;
+  width: 1em;
+}
