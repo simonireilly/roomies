@@ -126,18 +126,6 @@ export default function Home() {
       </div>
       <Scoreboard />
       <div className="controls">
-        <h3>{gameSpeed}</h3>
-        <label>
-          Set game speed: &nbsp;
-          <input
-            className="gameSpeedInput"
-            type="number"
-            min="1"
-            max="50"
-            onBlur={(e) => setGameSpeed(e.target.valueAsNumber)} />
-        </label>
-      </div>
-      <div className="controls">
         <Controls directions={directions} />
       </div>
     </div>
