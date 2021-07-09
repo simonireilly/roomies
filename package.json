@@ -12,6 +12,7 @@
     "@roomservice/node": "^1.0.0",
     "@roomservice/react": "^1.0.6",
     "next": "10.0.0",
+    "next-auth": "^3.27.3",
     "pino": "^6.11.0",
     "react": "16.13.1",
     "react-dom": "16.13.1"
