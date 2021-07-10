@@ -15,7 +15,7 @@ export default function Scoreboard() {
       <tbody>
         {
           players && Object.entries(players)
-            .sort((a, b) => a[1].score - b[1].score)
+            .sort((a, b) => b[1].score - a[1].score)
             .map(([key, val]) => 
               <tr key={key}>
                 <td>{val.name}</td>
