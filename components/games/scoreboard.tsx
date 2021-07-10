@@ -9,18 +9,19 @@ export default function Scoreboard() {
       <thead>
         <tr>
           <th>Name</th>
-          <th>Sore</th>
+          <th>Score</th>
         </tr>
       </thead>
       <tbody>
         {
           players && Object.entries(players)
-            .map(([key, val]) => {
-              return <tr key={key}>
+            .sort((a, b) => b[1].score - a[1].score)
+            .map(([key, val]) => 
+              <tr key={key}>
                 <td>{val.name}</td>
                 <td>{val.score || 0}</td>
               </tr>
-            })
+            )
         }
       </tbody>
     </table>
