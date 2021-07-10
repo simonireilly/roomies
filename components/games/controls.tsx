@@ -1,4 +1,4 @@
-import { Directions } from "../../pages"
+import { Directions } from "../../page-components/room"
 
 export default function Controls({ directions }: { directions: Directions }) {
   const setDirection = (actionName, value: boolean, e: MouseEvent) => {

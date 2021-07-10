@@ -1,5 +1,5 @@
 import { usePresence } from "@roomservice/react";
-import { Player } from "../../pages";
+import { Player } from "../../page-components/room";
 
 export default function Scoreboard() {
   const [players, setMyPlayer] = usePresence<Player>("demo", "players");
