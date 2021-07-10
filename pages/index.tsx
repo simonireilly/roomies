@@ -1,8 +1,9 @@
-import { signIn, signOut, useSession } from 'next-auth/client'
+import { NextPage } from 'next'
+import { signIn, useSession } from 'next-auth/client'
 import { Card } from '../components/users/card'
 
-export default function Home() {
-  const [session, loading] = useSession()
+const Home: NextPage = () => {
+  const [session] = useSession()
 
   return (
     <main>
@@ -53,3 +54,5 @@ export default function Home() {
     </main>
   )
 }
+
+export default Home

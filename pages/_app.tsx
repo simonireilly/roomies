@@ -1,10 +1,11 @@
-import { RoomServiceProvider } from '@roomservice/react'
 import { Provider } from 'next-auth/client'
+import { AppProps } from 'next/app'
 import Head from 'next/head'
+import { ReactElement } from 'react'
 
 import '../styles/globals.css'
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps): ReactElement {
   return (
     <Provider session={pageProps.session}>
       <Head>

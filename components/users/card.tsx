@@ -1,10 +1,11 @@
 import { signOut, useSession } from 'next-auth/client'
 import Image from 'next/image'
 import Link from 'next/link'
+import { FC } from 'react'
 import styles from './card.module.css'
 
-export const Card = () => {
-  const [session, loading] = useSession()
+export const Card: FC = () => {
+  const [session] = useSession()
   const { user } = session
 
   return (

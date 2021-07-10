@@ -1,8 +1,9 @@
 import { usePresence } from '@roomservice/react'
+import { FC } from 'react'
 import { Player } from '../../page-components/room'
 
-export default function Scoreboard() {
-  const [players, setMyPlayer] = usePresence<Player>('demo', 'players')
+const Scoreboard: FC = () => {
+  const [players] = usePresence<Player>('demo', 'players')
 
   return (
     <div>
@@ -28,3 +29,5 @@ export default function Scoreboard() {
     </div>
   )
 }
+
+export default Scoreboard

@@ -10,7 +10,10 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-const roomService = async (req: NextApiRequest, res: NextApiResponse) => {
+const roomService = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> => {
   const body = req.body
   const user = 'some-user-' + getRandomInt(1, 200)
 

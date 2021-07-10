@@ -1,4 +1,11 @@
-export default function Coin({ x, y }: { x: string; y: string }) {
+import { FC } from 'react'
+
+interface CoinProps {
+  x: string
+  y: string
+}
+
+const Coin: FC<CoinProps> = ({ x, y }) => {
   return (
     <div
       id="coin"
@@ -10,3 +17,5 @@ export default function Coin({ x, y }: { x: string; y: string }) {
     ></div>
   )
 }
+
+export default Coin

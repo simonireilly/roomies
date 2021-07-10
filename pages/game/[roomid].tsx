@@ -1,8 +1,9 @@
 import { RoomServiceProvider } from '@roomservice/react'
+import { NextPage } from 'next'
 import { useSession } from 'next-auth/client'
 import Room from '../../page-components/room'
 
-export default function RoomId() {
+const RoomId: NextPage = () => {
   const [session, loading] = useSession()
 
   if (loading) return null
@@ -14,3 +15,4 @@ export default function RoomId() {
     </RoomServiceProvider>
   )
 }
+export default RoomId

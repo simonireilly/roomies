@@ -1,12 +1,12 @@
-export default function Opponent({
-  x,
-  y,
-  name,
-}: {
+import { FC } from 'react'
+
+interface Opponent {
   x: string
   y: string
   name: string
-}) {
+}
+
+const Opponent: FC<Opponent> = ({ x, y, name }) => {
   return (
     <div
       title={name}
@@ -20,3 +20,5 @@ export default function Opponent({
     </div>
   )
 }
+
+export default Opponent

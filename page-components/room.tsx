@@ -8,6 +8,7 @@ import Coin from '../components/games/coin'
 import Opponent from '../components/games/opponent'
 import Scoreboard from '../components/games/scoreboard'
 import Link from 'next/link'
+import { NextPage } from 'next'
 
 export type Directions = {
   ArrowUp: boolean
@@ -32,7 +33,7 @@ const directions: Directions = {
 
 const boxWidth = 3
 
-export default function Room() {
+const Room: NextPage = () => {
   const [players, setMyPlayer] = usePresence<Player>('demo', 'players')
   const [coin, map] = useMap('demo', 'coin')
 
@@ -40,7 +41,7 @@ export default function Room() {
   const [top, setTop] = useState<number>(0)
   const [name, setName] = useState<string>('anon')
   const [score, setScore] = useState<number>(0)
-  const [gameSpeed, setGameSpeed] = useState<number>(20)
+  const gameSpeed = 20
 
   useEffect(() => {
     map?.set('position', {
@@ -68,7 +69,7 @@ export default function Room() {
         lowerArrowKeyName: string,
         upperArrowKeyName: string
       ): number => {
-        var n =
+        const n =
           value -
           (directions[lowerArrowKeyName] ? boxWidth : 0) +
           (directions[upperArrowKeyName] ? boxWidth : 0)
@@ -98,6 +99,7 @@ export default function Room() {
     if (!coin?.position) return
 
     const interval = setInterval(() => {
+      // @TODO: These should be refs
       const coinElement = document.getElementById('coin')
       const boxElement = document.getElementById('box')
 
@@ -134,7 +136,7 @@ export default function Room() {
           title="you"
         ></div>
         {Object.entries(players)
-          .filter(([_, val]) => val.name !== name)
+          .filter(([, val]) => val.name !== name)
           .map(([key, val]) => {
             return <Opponent key={key} {...val} />
           })}
@@ -147,3 +149,5 @@ export default function Room() {
     </div>
   )
 }
+
+export default Room

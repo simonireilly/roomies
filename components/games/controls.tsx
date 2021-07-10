@@ -1,6 +1,7 @@
+import { FC } from 'react'
 import { Directions } from '../../page-components/room'
 
-export default function Controls({ directions }: { directions: Directions }) {
+const Controls: FC<{ directions: Directions }> = ({ directions }) => {
   const setDirection = (actionName, value: boolean, e: MouseEvent) => {
     e.preventDefault()
     directions[actionName] = value
@@ -35,3 +36,5 @@ export default function Controls({ directions }: { directions: Directions }) {
     </>
   )
 }
+
+export default Controls
