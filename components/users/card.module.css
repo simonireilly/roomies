@@ -1,0 +1,26 @@
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 4px 4px #ccc;
+    border-radius: 0.2em;
+    column-gap: 1em;
+    padding: 0 0.5em;
+}
+
+.profileWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 1em;
+}
+
+@media screen and (max-width: 400px) {
+    .wrapper {
+        flex-direction: column;
+        row-gap: 1em;
+        padding: 1em;
+    }
+}

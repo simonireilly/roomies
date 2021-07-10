@@ -7,6 +7,7 @@ import Controls from '../components/games/controls'
 import Coin from '../components/games/coin'
 import Opponent from '../components/games/opponent'
 import Scoreboard from '../components/games/scoreboard'
+import Link from 'next/link'
 
 export type Directions = {
     ArrowUp: boolean
@@ -110,6 +111,13 @@ export default function Room() {
             <p>
                 Use the arrow keys to move
             </p>
+            <div>
+                <Link href="/">
+                    <button className="button button-negative">
+                        Leave Room
+                    </button>
+                </Link>
+            </div>
             <label>
                 UserName: &nbsp;
                 <input onChange={(e) => setName(e.target.value)} />

@@ -95,3 +95,32 @@ a {
   height: 1em;
   width: 1em;
 }
+
+.button {
+  border-radius: 1em;
+  font-size: 1em;
+  font-weight: 800;
+}
+
+.button:hover {
+  cursor: pointer;
+
+}
+
+.button--positive {
+  background-color: seagreen;
+  color: gainsboro;
+}
+
+.button--negative {
+  background-color: crimson;
+  color: gainsboro;
+}
+
+.button:hover {
+
+}
+
+.user--image {
+  border-radius: 0.2em;
+}
