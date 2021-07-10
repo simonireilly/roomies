@@ -1,6 +1,9 @@
 {
-    "cSpell.words": [
-        "roomies",
-        "roomservice"
-    ]
+  "cSpell.words": ["roomies", "roomservice"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

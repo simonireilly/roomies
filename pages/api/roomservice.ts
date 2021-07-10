@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import { NextApiRequest, NextApiResponse } from "next"
+import { NextApiRequest, NextApiResponse } from 'next'
 
 const API_KEY = process.env.ROOM_SERVICE_API_KEY
 
@@ -18,12 +18,12 @@ const roomService = async (req: NextApiRequest, res: NextApiResponse) => {
     method: 'post',
     headers: {
       Authorization: `Bearer: ${API_KEY}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       user: user,
-      resources: body.resources
-    })
+      resources: body.resources,
+    }),
   })
 
   const json = await r.json()
