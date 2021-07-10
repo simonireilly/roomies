@@ -17,6 +17,20 @@ export default function Home() {
       <h1>
         Welcome to roomies
       </h1>
+      <div>
+        {
+          !session && <>
+            <button className="button" onClick={() => signIn('github')}>
+              Sign in with GitHub
+            </button>
+          </>
+        }
+        {
+          session && <>
+            <Card />
+          </>
+        }
+      </div>
       <p>
         Roomies is a web game, written with these web tools:
       </p>
@@ -28,20 +42,6 @@ export default function Home() {
       <p>
         Roomies has a companion site for learning how to build websites with Next.js, Typescript, Vercel and Github
       </p>
-      <div>
-        {
-          !session && <>
-            <button className="button" onClick={() => signIn()}>
-              sign in
-            </button>
-          </>
-        }
-        {
-          session && <>
-            <Card />
-          </>
-        }
-      </div>
     </div>
   </main>
 }

@@ -10,7 +10,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const roomService = async (req: NextApiRequest, res: NextApiResponse) => {
   const body = req.body
   const user = 'some-user-' + getRandomInt(1, 200)
 
@@ -29,3 +29,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const json = await r.json()
   res.json(json)
 }
+
+export default roomService

@@ -23,7 +23,7 @@ export const Card = () => {
             </div>
         </div>
         <div>
-            <Link href="/game/112233">
+            <Link href="/game/112233" passHref>
                 <button className="button button--positive">
                     Find a game?
                 </button>
