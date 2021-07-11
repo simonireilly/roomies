@@ -1,15 +1,9 @@
-// user has a room ID, the room id is used to access teh active game
-
-import { useMap, usePresence } from '@roomservice/react'
 import { useEffect, useState } from 'react'
 import { isOverlapping } from '../utils/is-overlapping'
 import Controls from '../components/games/controls'
 import Coin from '../components/games/coin'
-import Opponent from '../components/games/opponent'
-import Scoreboard from '../components/games/scoreboard'
 import Link from 'next/link'
 import { NextPage } from 'next'
-import { useSession } from 'next-auth/client'
 
 export type Directions = {
   ArrowUp: boolean
@@ -34,24 +28,16 @@ const directions: Directions = {
 
 const boxWidth = 3
 
-const Room: NextPage<{ roomID: string }> = ({ roomID }) => {
-  const [session] = useSession()
-  const name = session.user.name
-
-  const [players, setMyPlayer] = usePresence<Player>(roomID, 'players')
-  const [coin, map] = useMap(roomID, 'coin')
+const LocalRoom: NextPage<{ roomID: string }> = ({ roomID }) => {
+  const [coin, setCoin] = useState({
+    x: '100',
+    y: '100',
+  })
 
   const [left, setLeft] = useState<number>(0)
   const [top, setTop] = useState<number>(0)
   const [score, setScore] = useState<number>(0)
   const gameSpeed = 20
-
-  useEffect(() => {
-    map?.set('position', {
-      x: 100,
-      y: 100,
-    })
-  }, [])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -88,18 +74,7 @@ const Room: NextPage<{ roomID: string }> = ({ roomID }) => {
   }, [gameSpeed])
 
   useEffect(() => {
-    if (!players) return
-
-    setMyPlayer.set({
-      x: left.toString(),
-      y: top.toString(),
-      name: name,
-      score: score,
-    })
-  }, [left, top, name])
-
-  useEffect(() => {
-    if (!coin?.position) return
+    if (!coin) return
 
     const interval = setInterval(() => {
       // @TODO: These should be refs
@@ -108,15 +83,15 @@ const Room: NextPage<{ roomID: string }> = ({ roomID }) => {
 
       const overlap = isOverlapping(coinElement, boxElement)
       if (overlap) {
-        map?.set('position', {
-          x: Math.floor(Math.random() * 300),
-          y: Math.floor(Math.random() * 300),
+        setCoin({
+          x: String(Math.floor(Math.random() * 300)),
+          y: String(Math.floor(Math.random() * 300)),
         })
         setScore((val) => val + 10)
       }
     }, gameSpeed)
     return () => clearInterval(interval)
-  }, [map])
+  }, [coin])
 
   return (
     <div className="wrapper">
@@ -135,14 +110,11 @@ const Room: NextPage<{ roomID: string }> = ({ roomID }) => {
           style={{ left, top }}
           title="you"
         ></div>
-        {Object.entries(players)
-          .filter(([, val]) => val.name !== name)
-          .map(([key, val]) => {
-            return <Opponent key={key} {...val} />
-          })}
-        {coin?.position && <Coin {...coin.position} />}
+        {coin && <Coin {...coin} />}
       </div>
-      <Scoreboard players={players} />
+      <div>
+        <em>Score: {score}</em>
+      </div>
       <div className="controls">
         <Controls directions={directions} />
       </div>
@@ -150,4 +122,4 @@ const Room: NextPage<{ roomID: string }> = ({ roomID }) => {
   )
 }
 
-export default Room
+export default LocalRoom

@@ -1,10 +1,7 @@
 import { NextPage } from 'next'
-import { signIn, useSession } from 'next-auth/client'
-import { Card } from '../components/users/card'
+import { Session } from '../components/users/session'
 
 const Home: NextPage = () => {
-  const [session] = useSession()
-
   return (
     <main>
       <div
@@ -18,20 +15,7 @@ const Home: NextPage = () => {
         }}
       >
         <h1>Welcome to roomies</h1>
-        <div>
-          {!session && (
-            <>
-              <button className="button" onClick={() => signIn('github')}>
-                Sign in with GitHub
-              </button>
-            </>
-          )}
-          {session && (
-            <>
-              <Card />
-            </>
-          )}
-        </div>
+        <Session />
         <p>Roomies is a web game, written with these web tools:</p>
         <ul>
           <li>
