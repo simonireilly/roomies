@@ -23,7 +23,7 @@ export const Card: FC = () => {
         </div>
       </div>
       <div>
-        <Link href="/game/112233" passHref>
+        <Link href="/online/112233" passHref>
           <button className="button button--positive">Find a game?</button>
         </Link>
       </div>

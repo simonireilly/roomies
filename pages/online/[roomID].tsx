@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/dist/client/router'
 import Link from 'next/link'
 import Room from '../../page-components/room'
+import { RoomServiceProvider } from '@roomservice/react'
 
 const RoomId: NextPage = () => {
   const [session, loading] = useSession()
@@ -30,6 +31,10 @@ const RoomId: NextPage = () => {
       </main>
     )
 
-  return <Room roomID={sanitizedRoomId} />
+  return (
+    <RoomServiceProvider clientParameters={{ auth: '/api/roomservice' }}>
+      <Room roomID={sanitizedRoomId} />
+    </RoomServiceProvider>
+  )
 }
 export default RoomId
