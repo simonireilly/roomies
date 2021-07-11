@@ -33,13 +33,13 @@ const directions: Directions = {
 
 const boxWidth = 3
 
-const Room: NextPage = () => {
-  const [players, setMyPlayer] = usePresence<Player>('demo', 'players')
-  const [coin, map] = useMap('demo', 'coin')
+const Room: NextPage<{ roomID: string }> = ({ roomID }) => {
+  const [players, setMyPlayer] = usePresence<Player>(roomID, 'players')
+  const [coin, map] = useMap(roomID, 'coin')
 
   const [left, setLeft] = useState<number>(0)
   const [top, setTop] = useState<number>(0)
-  const [name, setName] = useState<string>('anon')
+  const [name, setName] = useState<string>()
   const [score, setScore] = useState<number>(0)
   const gameSpeed = 20
 
@@ -117,6 +117,7 @@ const Room: NextPage = () => {
 
   return (
     <div className="wrapper">
+      <p>Room ID: {roomID}</p>
       <p>Use the arrow keys to move</p>
       <div>
         <Link href="/">
@@ -142,7 +143,7 @@ const Room: NextPage = () => {
           })}
         {coin?.position && <Coin {...coin.position} />}
       </div>
-      <Scoreboard />
+      <Scoreboard players={players} />
       <div className="controls">
         <Controls directions={directions} />
       </div>

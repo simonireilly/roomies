@@ -1,10 +1,9 @@
-import { usePresence } from '@roomservice/react'
 import { FC } from 'react'
 import { Player } from '../../page-components/room'
 
-const Scoreboard: FC = () => {
-  const [players] = usePresence<Player>('demo', 'players')
-
+const Scoreboard: FC<{ players: { [key: string]: Player } }> = ({
+  players,
+}) => {
   return (
     <div>
       <table>
