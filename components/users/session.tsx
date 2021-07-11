@@ -19,18 +19,12 @@ export const Session: FC = () => {
             </button>
           </div>
         )}
-        {session && (
-          <>
-            <Card />
-          </>
-        )}
+        {session && <Card />}
         <hr />
         <div>
-          <span>Play offline: &nbsp;</span>
+          <span>Play offline (anonymous): &nbsp;</span>
           <Link href="/local" passHref>
-            <button className="button" onClick={() => signIn('github')}>
-              Time trial
-            </button>
+            <button className="button">Time trial</button>
           </Link>
         </div>
       </div>

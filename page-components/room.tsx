@@ -9,6 +9,7 @@ import Opponent from '../components/games/opponent'
 import Scoreboard from '../components/games/scoreboard'
 import Link from 'next/link'
 import { NextPage } from 'next'
+import { useSession } from 'next-auth/client'
 
 export type Directions = {
   ArrowUp: boolean
@@ -34,12 +35,14 @@ const directions: Directions = {
 const boxWidth = 3
 
 const Room: NextPage<{ roomID: string }> = ({ roomID }) => {
+  const [session] = useSession()
+  const name = session.user.name
+
   const [players, setMyPlayer] = usePresence<Player>(roomID, 'players')
   const [coin, map] = useMap(roomID, 'coin')
 
   const [left, setLeft] = useState<number>(0)
   const [top, setTop] = useState<number>(0)
-  const [name, setName] = useState<string>()
   const [score, setScore] = useState<number>(0)
   const gameSpeed = 20
 
@@ -124,10 +127,6 @@ const Room: NextPage<{ roomID: string }> = ({ roomID }) => {
           <button className="button button-negative">Leave Room</button>
         </Link>
       </div>
-      <label>
-        UserName: &nbsp;
-        <input onChange={(e) => setName(e.target.value)} />
-      </label>
       <br />
       <div id="pane">
         <div
