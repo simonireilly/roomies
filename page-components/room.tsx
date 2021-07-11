@@ -120,7 +120,7 @@ const Room: NextPage<{ roomID: string }> = ({ roomID }) => {
       <p>Room ID: {roomID}</p>
       <p>Use the arrow keys to move</p>
       <div>
-        <Link href="/">
+        <Link href="/" passHref>
           <button className="button button-negative">Leave Room</button>
         </Link>
       </div>
