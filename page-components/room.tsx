@@ -40,18 +40,17 @@ const Room: NextPage<{ roomID: string }> = ({ roomID }) => {
 
   const [players, setMyPlayer] = usePresence<Player>(roomID, 'players')
   const [coin, map] = useMap(roomID, 'coin')
-
   const [left, setLeft] = useState<number>(0)
   const [top, setTop] = useState<number>(0)
   const [score, setScore] = useState<number>(0)
   const gameSpeed = 20
 
-  useEffect(() => {
+  if (!coin?.position) {
     map?.set('position', {
       x: 100,
       y: 100,
     })
-  }, [])
+  }
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -102,7 +101,6 @@ const Room: NextPage<{ roomID: string }> = ({ roomID }) => {
     if (!coin?.position) return
 
     const interval = setInterval(() => {
-      // @TODO: These should be refs
       const coinElement = document.getElementById('coin')
       const boxElement = document.getElementById('box')
 

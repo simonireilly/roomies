@@ -1,12 +1,20 @@
 import { signOut, useSession } from 'next-auth/client'
+import { useRouter } from 'next/dist/client/router'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FC } from 'react'
+import { FC, useState } from 'react'
+import { genRanHex } from '../../utils/room-numbers'
 import styles from './card.module.css'
 
 export const Card: FC = () => {
   const [session] = useSession()
+  const { push } = useRouter()
   const { user } = session
+  const [roomId, setRoomId] = useState(null)
+  const onSubmit = (e) => {
+    e.preventDefault()
+    push(`/online/${roomId}`)
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -23,14 +31,21 @@ export const Card: FC = () => {
         </div>
       </div>
       <div>
-        <Link href="/online/112233" passHref>
-          <button className="button button--positive">Find a game?</button>
+        <Link href={`/online/${genRanHex(6)}`} passHref>
+          <button className="button button--positive">Host a game</button>
         </Link>
       </div>
       <div>
         <button className="button button--negative" onClick={() => signOut()}>
           Sign out
         </button>
+      </div>
+      <div>
+        <form onSubmit={onSubmit}>
+          <label>
+            Join a room: <input onChange={(e) => setRoomId(e.target.value)} />
+          </label>
+        </form>
       </div>
     </div>
   )
