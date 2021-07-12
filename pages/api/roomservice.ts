@@ -11,7 +11,6 @@ const roomService = async (
 ): Promise<void> => {
   const session = await getSession({ req })
   const { userId } = session
-
   const body = req.body
 
   const r = await fetch('https://super.roomservice.dev/provision', {
